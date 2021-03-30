@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #game-screen{
+            display: none;
+        }
+        #instructions {
+            display: none;
+        }
+        body{
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="vh-100">
+        <div id="initial-screen" class="container h-100">
+            <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                <h1>Bloxx</h1>
+                <button type="submit" id="new-game-button" class="btn btn-primary m-2">New Game</button>
+                <div class="col-xs-2">
+                    <input type="text" placeholder="Enter room code" id="room-code-input" class="form-control">
+                </div>
+                <button type="submit" id="join-game-button" class="btn btn-secondary m-2">Join Game</button>
+                <button type="button" class="btn btn-info m-2" onclick="document.getElementById('instructions').style.display = 'flex';">How to play?</button>
+                <div id="instructions" class="flex-column align-items-center justify-content-center">
+                    <h2>How to play Bloxx: </h1>
+                    <ol>
+                        <li> WASD to move</li>
+                        <li> Left click to shoot</li>
+                        <li> E to use shop at spawn</li>
+                        <li> Survive for as long as you can</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div id="game-screen">
+            <span id="game-code-display"></span>
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.0/socket.io.js" integrity="sha512-+l9L4lMTFNy3dEglQpprf7jQBhQsQ3/WvOnjaN/+/L4i0jOstgScV0q2TjfvRF4V+ZePMDuZYIQtg5T4MKr+MQ==" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+</html>
