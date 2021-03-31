@@ -19,11 +19,7 @@ function createObstacles(width, height){
     // try refactoring logic for pathfinding
     console.log("Obstacle Width: " + obstacleWidth + " Obstacle Height: " + obstacleHeight);
     let obstacles = [
-        // do smth about these
-        // WAIT WAIT WAT
-        // INITIALIZE A GIT REPO HERE FIRST
-        // THEN BRANCH OFF
-        // THEN DO SMTH ABOUT IT
+        /*
 
         new Obstacle(obstacleWidth * 2, obstacleHeight * 2, obstacleWidth * 6, obstacleHeight),
         new Obstacle(obstacleWidth * 2, obstacleHeight * 18, obstacleWidth * 6, obstacleHeight),
@@ -42,14 +38,28 @@ function createObstacles(width, height){
 
         new Obstacle(obstacleWidth * 11, obstacleHeight * 5, obstacleWidth, obstacleHeight * 6),
         new Obstacle(obstacleWidth * 8, obstacleHeight * 9, obstacleWidth, obstacleHeight * 6)
+        */
 
         // this should still work in theory
-        /*
+        // then work on an enemy class
+        
         new Obstacle(2, 2, 6, 1, obstacleWidth, obstacleHeight),
         new Obstacle(2, 18, 6, 1, obstacleWidth, obstacleHeight),
         new Obstacle(13, 2, 6, 1, obstacleWidth, obstacleHeight),
-        new Obstacle(13, 18, 6, 1, obstacleWidth, obstacleHeight)
-        */
+        new Obstacle(13, 18, 6, 1, obstacleWidth, obstacleHeight),
+
+        new Obstacle(2, 2, 1, 6, obstacleWidth, obstacleHeight),
+        new Obstacle(2, 13, 1, 6, obstacleWidth, obstacleHeight),
+        new Obstacle(18, 2, 1, 6, obstacleWidth, obstacleHeight),
+        new Obstacle(18, 13, 1, 6, obstacleWidth, obstacleHeight),
+
+        new Obstacle(5, 5, 1, 7, obstacleWidth, obstacleHeight),
+        new Obstacle(8, 5, 7, 1, obstacleWidth, obstacleHeight),
+        new Obstacle(14, 8, 1, 7, obstacleWidth, obstacleHeight),
+        new Obstacle(5, 14, 7, 1, obstacleWidth, obstacleHeight),
+
+        new Obstacle(11, 5, 1, 6, obstacleWidth, obstacleHeight),
+        new Obstacle(8, 9, 1, 6, obstacleWidth, obstacleHeight)
     ];
 
     return obstacles;

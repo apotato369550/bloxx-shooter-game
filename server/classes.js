@@ -59,17 +59,15 @@ class Projectile {
 // add left/right getter methods
 class Obstacle {
     constructor(x, y, width, height, obstacleWidth, obstacleHeight){
-        this.x = x; // absolute x
-        this.y = y; // absolute y
-        this.width = width;
-        this.height = height;
+        this.x = x * obstacleWidth; // absolute x
+        this.y = y * obstacleHeight; // absolute y
+        this.width = width * obstacleWidth;
+        this.height = height * obstacleHeight;
 
-        /*
         this.grid_x = x;
         this.grid_y = y;
         this.grid_width = width;
         this.grid_height = height;
-        */
     }
     get left(){
         return this.x;
