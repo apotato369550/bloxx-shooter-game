@@ -1,5 +1,5 @@
 const { GRID_SIZE, FRICTION } = require("./constants.js");
-const { Player, Vector, Projectile, Obstacle } = require("./classes.js");
+const { Player, Vector, Projectile, Obstacle, Enemy } = require("./classes.js");
 const { PassThrough } = require("stream");
 const { PRIORITY_BELOW_NORMAL } = require("constants");
 
@@ -19,26 +19,6 @@ function createObstacles(width, height){
     // try refactoring logic for pathfinding
     console.log("Obstacle Width: " + obstacleWidth + " Obstacle Height: " + obstacleHeight);
     let obstacles = [
-        /*
-
-        new Obstacle(obstacleWidth * 2, obstacleHeight * 2, obstacleWidth * 6, obstacleHeight),
-        new Obstacle(obstacleWidth * 2, obstacleHeight * 18, obstacleWidth * 6, obstacleHeight),
-        new Obstacle(obstacleWidth * 13, obstacleHeight * 2, obstacleWidth * 6, obstacleHeight),
-        new Obstacle(obstacleWidth * 13, obstacleHeight * 18, obstacleWidth * 6, obstacleHeight),
-
-        new Obstacle(obstacleWidth * 2, obstacleHeight * 2, obstacleWidth, obstacleHeight * 6),
-        new Obstacle(obstacleWidth * 2, obstacleHeight * 13, obstacleWidth, obstacleHeight * 6),
-        new Obstacle(obstacleWidth * 18, obstacleHeight * 2, obstacleWidth, obstacleHeight * 6),
-        new Obstacle(obstacleWidth * 18, obstacleHeight * 13, obstacleWidth, obstacleHeight * 6),
-
-        new Obstacle(obstacleWidth * 5, obstacleHeight * 5, obstacleWidth, obstacleHeight * 7),
-        new Obstacle(obstacleWidth * 8, obstacleHeight * 5, obstacleWidth * 7, obstacleHeight),
-        new Obstacle(obstacleWidth * 14, obstacleHeight * 8, obstacleWidth, obstacleHeight * 7),
-        new Obstacle(obstacleWidth * 5, obstacleHeight * 14, obstacleWidth * 7, obstacleHeight),
-
-        new Obstacle(obstacleWidth * 11, obstacleHeight * 5, obstacleWidth, obstacleHeight * 6),
-        new Obstacle(obstacleWidth * 8, obstacleHeight * 9, obstacleWidth, obstacleHeight * 6)
-        */
 
         // this should still work in theory
         // then work on an enemy class
@@ -118,6 +98,28 @@ function gameLoop(state){
             }
         })
     });
+
+    const enemies = state.enemies;
+
+    /*
+    enemies.forEach((enemy, index) => {
+        console.log("Enemy Number: " + (index + 1));
+        console.log(enemy);
+    });
+
+    // every tick there is a chance of an enemy spawning
+    // copy spawn enemies in previous project
+    // devise a way/where to put spawn enemeis code
+
+    if(Math.floor(Math.random() * 25 + 1) == 1){
+        let obstacleWidth = state.width / GRID_SIZE;
+        let obstacleHeight = state.height / GRID_SIZE;
+
+        console.log("an enemy has spawned motherfucker");
+        addEnemy(obstacleWidth, obstacleHeight, state);
+        console.log(state.enemies)
+    }
+    */
 }
 
 function getCollide(entity, state){
@@ -190,9 +192,17 @@ function getCollide(entity, state){
 }
 
 function addPlayer(state){
-    console.log(state);
     let newPlayer = new Player(state.width / 2, state.height / 2, 12, new Vector());
     state.players.push(newPlayer);
+
+    // this'll spawn one enemy when the player enters the game
+    let obstacleWidth = state.width / GRID_SIZE;
+    let obstacleHeight = state.height / GRID_SIZE;
+
+    // state.enemies is empty
+    // it's coz i put it after
+    addEnemy(obstacleWidth, obstacleHeight, state);
+    console.log("an enemy has spawned motherfucker. Enemies: " + state.enemies);
 }
 
 function addProjectile(state, playerNumber, angle){
@@ -204,10 +214,27 @@ function addProjectile(state, playerNumber, angle){
     player.projectiles.push(projectile);
 }
 
-function addEnemy(){
-    // add enemy to edge of the screen
-    // figure out how to do pathfinding
-    return;
+function addEnemy(width, height, state){
+    const length = Math.floor(Math.random() * width - 15) + 15;
+
+    let x, y;
+    // these only spawn the enemy at the corners
+
+    if(Math.random() < 0.5){
+        y = Math.random() < 0.5 ? 20 : 0;
+        x = Math.floor(Math.random() * 20) + 1;
+    } else {
+        x = Math.random() < 0.5 ? 20 : 0;
+        y = Math.floor(Math.random() * 20) + 1;
+    }
+
+    // give obstacles here as well for the enemy to pathfind
+
+    var enemy = new Enemy(x, y, length, width, height, state.obstacles);
+    state.enemies.push(enemy);
+
+    // run to see if bugs
+    // draw the enemy on the canvas
 }
 
 // create function that adds/places the canvas' dimensions onto the gamestate

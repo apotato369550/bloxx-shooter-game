@@ -4,6 +4,7 @@ const PLAYER_COLOR = "#ffefc4";
 const ALLY_COLOR = "#9f9bcf";
 const PROJECTILE_COLOR = "#f5d4d0";
 const ALLY_PROJECTILE_COLOR = "#eec7ff";
+const ENEMY_COLOR = "#f54242";
 
 const socket = io("http://localhost:3000");
 
@@ -136,6 +137,14 @@ function paintgame(state){
         context.fillStyle = "white";
         context.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     });
+
+    // print enemies here VVV
+    state.enemies.forEach(enemy => {
+        // test this
+        context.beginPath();
+        context.fillStyle = ENEMY_COLOR;
+        context.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    })
 
     // work on printing the gamecode lmao
     if(gameCode){
