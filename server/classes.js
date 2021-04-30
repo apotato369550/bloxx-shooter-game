@@ -1,5 +1,6 @@
 const { runInThisContext } = require("vm");
 const { GRID_SIZE } = require("./constants") 
+const tstl = require("tstl")
 // the rectangles and shiz are wrong
 
 class Vector{
@@ -9,8 +10,7 @@ class Vector{
     }
 }
 
-// add stuff like friction
-// reference pong and previous project
+// check stack overflow for the solution to this thing lmao
 class Player {
     constructor(x, y, radius, velocity){
         this.x = x;
@@ -98,13 +98,47 @@ class Enemy {
     }
 
 
-    breadthFirstSearch(){
-        // finally work on this
-        return true;
+    breadthFirstSearch(start, destination, adjacency_list, predecessor, distance){
+        let queue = new tstl.Queue();
+        // test this later
+        // try and test whiel getting rid of predecessor and distance
+        let nodes = GRID_SIZE * GRID_SIZE;
+        let visited = Array(nodes).fill(false);
+
+        distance.fill(1000);
+        predecessor.fill(-1);
+
+        visited[start] = true;
+        distance[start] = 0;
+
+        queue.push(start);
+
+        while(!queue.empty()){
+            // THIS WORKS MOTHERFUCKER LET'S GOOOOOOO
+            let current = queue.front();
+            queue.pop();
+            console.log("Current: " + current);
+            
+
+            for(var i = 0; i < adjacency_list[current].length; i++){
+                if(!visited[adjacency_list[current][i]]) {
+                    visited[adjacency_list[current][i]] = true;
+                    distance[adjacency_list[current][i]] = distance[current] + 1;
+                    predecessor[adjacency_list[current][i]] = current;
+                    queue.push(adjacency_list[current][i]);
+
+                    if(adjacency_list[current][i] == destination){
+                        return true;
+                    }
+                }
+            }
+        }
+        // deal with error here lmaooo
+
+        return false;
     }
 
     createAdjacencyList(obstacles){
-        var totalNodes = GRID_SIZE * GRID_SIZE;
         var adjacencyList = new Array();
         for(var i = 0; i < (GRID_SIZE * GRID_SIZE); i++){
             adjacencyList.push(new Array());
@@ -201,6 +235,30 @@ class Enemy {
         // shortest distance function 3rd
 
         let adjacencyList = this.createAdjacencyList(obstacles);
+        let nodes = GRID_SIZE * GRID_SIZE;
+
+        let predecessor = new Array();
+        let distance = new Array();
+        
+        for(var i = 0; i < nodes; i++){
+            predecessor.push(0);
+            distance.push(0)
+        }
+
+        var start = 3;
+        var end = 38;
+        // it only works if the end is 1... there is something wrong with the algorithm
+
+        // forgot to add distance
+        if (!this.breadthFirstSearch(start, end, adjacencyList, predecessor, distance)){
+            // for some reason source and destination are still not connected...
+            console.log("Source and destination are not connected");
+            return;
+        } else {
+            console.log("Woot woot! We in business motherfucker")
+        }
+
+
 
         return [
             {x: 1, y: 1},

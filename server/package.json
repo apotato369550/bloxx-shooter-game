@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "socket.io": "^4.0.1",
+    "tstl": "^2.4.16"
+  }
+}

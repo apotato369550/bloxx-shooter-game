@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tstl": "^2.4.16"
+  }
+}
