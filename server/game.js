@@ -60,9 +60,9 @@ function gameLoop(state){
         return;
     }
 
-    const players = state.players;
+    
 
-    players.forEach(player => {
+    state.players.forEach(player => {
         let collide = getCollide(player, state);
 
         // figure out what to do after thing collides
@@ -100,6 +100,42 @@ function gameLoop(state){
     });
 
     const enemies = state.enemies;
+
+    enemies.forEach(enemy => {
+        console.log("Velocity x/y " + enemy.velocity.x + "/" + enemy.velocity.y);
+        
+
+        let goalX = enemy.goal % GRID_SIZE;
+        let goalY = Math.floor(enemy.goal / GRID_SIZE);
+
+        if(goalX == enemy.getGridX() && goalY == enemy.getGridY()){
+            console.log("------------------ GOALL REACHED --------------");
+            enemy.goal = enemy.path.pop();
+            while(enemy.goal % GRID_SIZE == enemy.getGridX() && Math.floor(enemy.goal / GRID_SIZE) == enemy.getGridY()){
+                enemy.goal = enemy.path.pop();
+            }
+            console.log("New Goal: " + enemy.goal + " Coordinates: (" + enemy.goal % GRID_SIZE + ", " + Math.floor(enemy.goal / GRID_SIZE) + ") ");
+            enemy.setAngledVelocity();
+            // work without this firstVVV
+            // then experiment with it
+            // keeps overlapping?
+            /*
+            enemy.goal = enemy.path.pop();
+            enemy.setAngledVelocity();
+            */
+
+            // now it's going the other way??
+            // analyze dis bullshit tomorrow since my brain is not handling it my guy
+        } else {
+            console.log("goal not reached:(")
+            console.log("goal X " + goalX + " != " + enemy.getGridX() + " goal Y " + goalY + " != " + enemy.getGridY());
+        }
+        enemy.x += enemy.velocity.x;
+        enemy.y += enemy.velocity.y;
+        // console.log("GoalX = " + goalX + " grid x = " + enemy.getGridX());
+        // console.log("GoalY = " + goalY + " grid y = " + enemy.getGridY())
+    })
+
 
     /*
     enemies.forEach((enemy, index) => {
@@ -199,8 +235,7 @@ function addPlayer(state){
     let obstacleWidth = state.width / GRID_SIZE;
     let obstacleHeight = state.height / GRID_SIZE;
 
-    // state.enemies is empty
-    // it's coz i put it after
+    // it's moving, but not in the right direction
     addEnemy(obstacleWidth, obstacleHeight, state);
     console.log("an enemy has spawned motherfucker. Enemies: " + state.enemies);
 }
@@ -250,7 +285,7 @@ function getUpdatedVelocity(keys, velocity){
 }
 
 function getProjectileAngle(mouseX, mouseY, playerX, playerY){
-    angle = Math.atan2(mouseY - playerY, mouseX - playerX);
+    let angle = Math.atan2(mouseY - playerY, mouseX - playerX);
     return angle;
 }
 
