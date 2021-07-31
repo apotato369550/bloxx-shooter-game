@@ -102,9 +102,17 @@ function gameLoop(state){
     const enemies = state.enemies;
 
     enemies.forEach(enemy => {
-        console.log("Velocity x/y " + enemy.velocity.x + "/" + enemy.velocity.y);
         
 
+        // get rid of goal system
+        // do what blob game did for the enemies, but include collision for walls
+        // do this instead of pathfinding
+
+        // there is something wrong w/ the logic here
+        // maybe it's the angled velocity logic??
+        // figure this shit out scoob
+
+        /*
         let goalX = enemy.goal % GRID_SIZE;
         let goalY = Math.floor(enemy.goal / GRID_SIZE);
 
@@ -122,7 +130,6 @@ function gameLoop(state){
             /*
             enemy.goal = enemy.path.pop();
             enemy.setAngledVelocity();
-            */
 
             // now it's going the other way??
             // analyze dis bullshit tomorrow since my brain is not handling it my guy
@@ -132,8 +139,35 @@ function gameLoop(state){
         }
         enemy.x += enemy.velocity.x;
         enemy.y += enemy.velocity.y;
-        // console.log("GoalX = " + goalX + " grid x = " + enemy.getGridX());
-        // console.log("GoalY = " + goalY + " grid y = " + enemy.getGridY())
+        */
+
+        // work on these ideas
+        enemy.x += enemy.velocity.x;
+        enemy.y += enemy.velocity.y;
+
+        let goalX = enemy.goal % GRID_SIZE;
+        let goalY = Math.floor(enemy.goal / GRID_SIZE);
+
+        console.log("Goal X = " + goalX + " Goal Y = " + goalY);
+        console.log("Enemy X = " + enemy.getGridX() + " Enemy Y = " + enemy.getGridY());
+
+        if(goalX == enemy.getGridX() && goalY == enemy.getGridY()){
+            // pop or unshift??
+            console.log("GOAL REACHED LLLLLLLLLLLLLLLLLLLLLLLL");
+            enemy.goal = enemy.path.pop();
+            enemy.setAngledVelocity();
+            // test this later
+            // test this tomorrow
+            // display goal ehre?
+            // enemy x and y don't change
+            // the goals are set in reverse order
+            // current Current
+
+            // figure out why the values are not updating
+
+        }
+        // figure out if this is correct first ^^^
+        // do it step by step
     })
 
 
@@ -250,7 +284,7 @@ function addProjectile(state, playerNumber, angle){
 }
 
 function addEnemy(width, height, state){
-    const length = Math.floor(Math.random() * width - 15) + 15;
+    const length = Math.floor(Math.random() * width - 15) + 30;
 
     let x, y;
     // these only spawn the enemy at the corners
@@ -265,7 +299,7 @@ function addEnemy(width, height, state){
 
     // give obstacles here as well for the enemy to pathfind
 
-    var enemy = new Enemy(x, y, length, width, height, state.obstacles);
+    var enemy = new Enemy(x, y, length, width, height, state.obstacles, state.width, state.height);
     state.enemies.push(enemy);
 
     // run to see if bugs

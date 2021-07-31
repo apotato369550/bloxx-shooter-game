@@ -86,7 +86,7 @@ class Obstacle {
 }
 
 class Enemy {
-    constructor(x, y, length, gridWidth, gridHeight, obstacles){
+    constructor(x, y, length, gridWidth, gridHeight, obstacles, canvasWidth, canvasHeight){
         this.x = x * gridWidth;
         this.y = y * gridHeight;
         this.width = length;
@@ -95,31 +95,26 @@ class Enemy {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
 
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+
         this.gridX = x;
         this.gridY = y;
 
+        // make this thing go to the center of the canvas
 
-        // it's back to front
-        // do pop for finding currentGoal
+        /*
         this.path = this.generatePath(obstacles, this.gridX, this.gridY);
-        // test this outVVV
-        // tomorrow
-        this.goal = this.path.pop();
-        // forgot to rename goal to currentGoal
+        this.goal = (canvasWidth / 2) + (canvasHeight / 2);
+        */
+
         console.log("Enemy Current Goal: " + this.goal);
         this.velocity = new Vector();
         this.setAngledVelocity();
 
-        // create method that creates velocity angle based on goal
     }
 
     getGridX(){
-        // I FORGOT THE FORMULAS LMAO
-        // I'M STUPID FOR DELETING THE COORDS THING BRUH
-        // RE-LEARN THE FORMULA FOR GETTING GRID X AND Y
-        // it was in the comments too why did i do that?
-        // never delete comments again
-
         return Math.floor(this.x / this.gridWidth);
     }
 
@@ -128,30 +123,44 @@ class Enemy {
     }
 
     setAngledVelocity(){
-        // test this mf
+        /*
         let goalX = this.goal % GRID_SIZE;
         let goalY = Math.floor(this.goal / GRID_SIZE);
 
-        // it's going the right way, but doesnt stop to turn
-        let angle = Math.atan2(this.gridY - goalY, this.gridX - goalX);
-        // review logic from blob shooter game
+
+        let angle = Math.atan2(this.getGridY() - goalY, this.getGridX() - goalX);
         console.log("Angle: " + angle)
-        // did i switch it up??
         console.log("Supposed X velocity: " + Math.cos(angle));
         console.log("Supposed Y Velocity: " + Math.sin(angle));
-        // test this out later
         
-        // test if it still overlaps
+        this.velocity.x = Math.cos(angle) * -2;
+        this.velocity.y = Math.sin(angle) * -2;
+        */
+
+        // follow the formula of the original blob game
+
+        // let velocity = new Vector(10, 10);
+
+        // copy formula
+
+        /*
+        let goalX = this.goal % GRID_SIZE;
+        let goalY = Math.floor(this.goal / GRID_SIZE);
+        */
+
+        // let angle = Math.atan2(this.getGridY() - goalY, this.getGridX() - goalX);
+
+        // test this mf tomorrow
+
+        let angle = Math.atan2(this.canvasHeight / 2 - this.y, this.canvasWidth / 2 - this.x);
+
         this.velocity.x = Math.cos(angle) * 2;
         this.velocity.y = Math.sin(angle) * 2;
-        // let velocity = new Vector(10, 10);
     }
 
 
     breadthFirstSearch(start, destination, adjacency_list, predecessor, distance){
         let queue = new tstl.Queue();
-        // test this later
-        // try and test whiel getting rid of predecessor and distance
         let nodes = GRID_SIZE * GRID_SIZE;
         let visited = Array(nodes).fill(false);
 
@@ -164,8 +173,6 @@ class Enemy {
         queue.push(start);
 
         while(!queue.empty()){
-            // THIS WORKS MOTHERFUCKER LET'S GOOOOOOO
-            // test this motherfucker out later
             let current = queue.front();
             queue.pop();
             console.log("Current: " + current);
@@ -374,50 +381,6 @@ class Enemy {
         // direction should be array because it is two dimensional
         let direction = new Array();
 
-        /*
-        for(let i = 1; i < path.length - 1; i++){
-            // TRAVERSE THROUGH THE ARRAY BACKWARDS!!!
-            // implement this tomorrow
-            // ^^
-            // print values of x and y for both previous and current
-            let previous = new Array();
-            // previous.push(path[i - 1] % GRID_SIZE);
-            // previous.push(Math.floor(path[i] / GRID_SIZE));
-            previous[0] = path[i - 1] % GRID_SIZE;
-            previous[1] = Math.floor(path[i - 1] / GRID_SIZE);
-
-            let current = new Array();
-            // current.push(path[i] % GRID_SIZE);
-            // current.push(Math.floor(path[i] / GRID_SIZE));
-            current[0] = path[i] % GRID_SIZE;
-            current[1] = Math.floor(path[i] / GRID_SIZE);
-            // right idea, but we are getting the first instead of the last...
-            // re-structure algorithm
-            let currentDirection = new Array();
-            // what???
-            currentDirection[0] = previous[0] - current[0];
-            currentDirection[1] = previous[1] - current[1];
-
-            // change this to and?
-            // test this..
-            if(direction[0] != currentDirection[0] || direction[1] != currentDirection[1]){
-                shortenedPath.push(previous);
-                direction = currentDirection;
-                // this is still kinda wrong lol
-            }
-
-            // refine logic here
-
-            let next = new Array();
-            previous.push(path[i + 1] % GRID_SIZE);
-            previous.push(Math.floor(path[i] / GRID_SIZE));
-
-            // convert these to (x, y)
-
-            
-        }
-        */
-
         // test if this works tomorrow
         for(let i = path.length - 2; i > 0; i--){
             let previous = new Array();
@@ -445,7 +408,7 @@ class Enemy {
             // it doesn't take into account the first node tho
             if(direction[0] != currentDirection[0] || direction[1] != currentDirection[1]){
                 // instead of push, shift??
-                shortenedPath.unshift(previous);
+                shortenedPath.push(previous);
                 direction = currentDirection;
                 // this is still kinda wrong lol
             }
@@ -460,20 +423,15 @@ class Enemy {
             // convert these to (x, y)
         }
 
+        path = new Array();
 
         console.log("----------------- SHORTENED PATH HERE -----------------")
         for(let i = 0; i < shortenedPath.length; i++){
-            // lmao this doesn't work
-            // shortened path is an array of two numbers
-            // convert these to nodes
 
-            // get formula on how to convert from coords to nodes lol
             console.log(i + " Coordinates: (" + shortenedPath[i][0] + ", " + shortenedPath[i][1] + ") ");
+            path.push(shortenedPath[i][0] + (shortenedPath[i][1] * GRID_SIZE));
         }
-
-        // test doing it front to back and back to front
-        // test this later
-        return shortenedPath;
+        return path;
     }
 
     
