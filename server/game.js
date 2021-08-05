@@ -2,6 +2,7 @@ const { GRID_SIZE, FRICTION } = require("./constants.js");
 const { Player, Vector, Projectile, Obstacle, Enemy } = require("./classes.js");
 const { PassThrough } = require("stream");
 const { PRIORITY_BELOW_NORMAL } = require("constants");
+const { emitKeypressEvents } = require("readline");
 
 // work on player movement and physics
 // work on player add feature
@@ -112,62 +113,38 @@ function gameLoop(state){
         // maybe it's the angled velocity logic??
         // figure this shit out scoob
 
-        /*
-        let goalX = enemy.goal % GRID_SIZE;
-        let goalY = Math.floor(enemy.goal / GRID_SIZE);
-
-        if(goalX == enemy.getGridX() && goalY == enemy.getGridY()){
-            console.log("------------------ GOALL REACHED --------------");
-            enemy.goal = enemy.path.pop();
-            while(enemy.goal % GRID_SIZE == enemy.getGridX() && Math.floor(enemy.goal / GRID_SIZE) == enemy.getGridY()){
-                enemy.goal = enemy.path.pop();
-            }
-            console.log("New Goal: " + enemy.goal + " Coordinates: (" + enemy.goal % GRID_SIZE + ", " + Math.floor(enemy.goal / GRID_SIZE) + ") ");
-            enemy.setAngledVelocity();
-            // work without this firstVVV
-            // then experiment with it
-            // keeps overlapping?
-            /*
-            enemy.goal = enemy.path.pop();
-            enemy.setAngledVelocity();
-
-            // now it's going the other way??
-            // analyze dis bullshit tomorrow since my brain is not handling it my guy
-        } else {
-            console.log("goal not reached:(")
-            console.log("goal X " + goalX + " != " + enemy.getGridX() + " goal Y " + goalY + " != " + enemy.getGridY());
-        }
-        enemy.x += enemy.velocity.x;
-        enemy.y += enemy.velocity.y;
-        */
 
         // work on these ideas
         enemy.x += enemy.velocity.x;
         enemy.y += enemy.velocity.y;
 
-        let goalX = enemy.goal % GRID_SIZE;
-        let goalY = Math.floor(enemy.goal / GRID_SIZE);
+        let collide = getCollide(enemy, state);
+        console.log("Left: " + enemy.left);
+        console.log("Right: " + enemy.right)
+        console.log("Left Collide: " + collide.left)
+        console.log("Right Collide: " + collide.right)
+        console.log("Top Collide: " + collide.top)
+        console.log("Bottom Collide: " + collide.bottom)
 
-        console.log("Goal X = " + goalX + " Goal Y = " + goalY);
-        console.log("Enemy X = " + enemy.getGridX() + " Enemy Y = " + enemy.getGridY());
+        // test this logic first
 
-        if(goalX == enemy.getGridX() && goalY == enemy.getGridY()){
-            // pop or unshift??
-            console.log("GOAL REACHED LLLLLLLLLLLLLLLLLLLLLLLL");
-            enemy.goal = enemy.path.pop();
+        if((collide.left && enemy.velocity.x < 0) || 
+        (collide.right && enemy.velocity.x > 0)){
+            enemy.velocity.x = 0;
+            enemy.velocity.y = 3;
+        } else {
             enemy.setAngledVelocity();
-            // test this later
-            // test this tomorrow
-            // display goal ehre?
-            // enemy x and y don't change
-            // the goals are set in reverse order
-            // current Current
-
-            // figure out why the values are not updating
-
+            enemy.x += enemy.velocity.x;
         }
-        // figure out if this is correct first ^^^
-        // do it step by step
+
+        if((collide.top && enemy.velocity.y < 0) || 
+        (collide.bottom && enemy.velocity.y > 0)){
+            enemy.velocity.y = 0;
+            enemy.velocity.x = 3;
+        } else {    
+            enemy.y += enemy.velocity.y;
+        }
+
     })
 
 

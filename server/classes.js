@@ -91,6 +91,7 @@ class Enemy {
         this.y = y * gridHeight;
         this.width = length;
         this.height = length;
+        this.length = length;
 
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
@@ -114,12 +115,17 @@ class Enemy {
 
     }
 
-    getGridX(){
-        return Math.floor(this.x / this.gridWidth);
+    get left(){
+        return this.x;
     }
-
-    getGridY(){
-        return Math.floor(this.y / this.gridHeight);
+    get right(){
+        return this.x + this.length;
+    }
+    get top(){
+        return this.y;
+    }
+    get bottom(){
+        return this.y + this.length;
     }
 
     setAngledVelocity(){
@@ -154,8 +160,8 @@ class Enemy {
 
         let angle = Math.atan2(this.canvasHeight / 2 - this.y, this.canvasWidth / 2 - this.x);
 
-        this.velocity.x = Math.cos(angle) * 2;
-        this.velocity.y = Math.sin(angle) * 2;
+        this.velocity.x = Math.cos(angle) * 3;
+        this.velocity.y = Math.sin(angle) * 3;
     }
 
 
